@@ -1,0 +1,155 @@
+<div class="container">
+    <i *ngIf="!sidebar" (click)="sidebarToggle()"class="fas fa-chevron-circle-right"></i>
+    <i *ngIf="sidebar" (click)="sidebarToggle()" class="fas fa-chevron-circle-left"></i>
+    <i (click)="selectedChoices()" *ngIf="randomDiv" class="fas fa-toggle-on toggle"></i>
+    <i (click)="selectedChoices()" *ngIf="randomSelected" class="fas fa-toggle-off toggle"></i>
+    <br>
+    <div *ngIf="sidebar" class="sidebar">
+
+      <div *ngIf="historyBar" class="history">
+        <button class="clear"(click)="clearHistory()">
+          <span>
+            <i class="far fa-times-circle"></i>
+          </span>
+        </button>
+        <h4 (click)="toggleBar()" class="titleHistory">History</h4>
+        <div *ngFor="let each of history.reverse()" class="each">
+          <h6 class="eachName">{{each.name}}</h6>
+          <span class="cat" *ngFor="let i of each.categories"> {{i.title}} </span>
+          <button class="addToo">
+            <span>
+              <i (click)="selectRestaurant(each)" class="fas fa-plus-circle fa-plus-circles"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+  
+      <div *ngIf="selectedBar"  class="selected">
+        <button class="clear"(click)="clearSelected()">
+          <span>
+            <i class="far fa-times-circle"></i>
+          </span>
+        </button>
+        <h4 (click)="toggleBar()" class="titleHistory">Selected Options</h4>
+        <div *ngFor="let each of selected.reverse()" class="each">
+          <h6 class="eachName">{{each.name}}</h6>
+          <span class="cat" *ngFor="let i of each.categories"> {{i.title}} </span>
+          <button class="remove">
+            <span>
+
+              <i (click)="removeFromSelected(each)" class="fas fa-minus-circle fa-plus-circles"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  <div class="row">
+    <div class="col-sm-0 col-lg-2"></div>
+
+    
+    <div class="col-sm-12 col-lg-6">
+        <div *ngIf="answer && randomDiv" class="answer">
+            <button class="addTo">
+              <span>
+                <i (click)="selectRestaurant(answer)" class="fas fa-plus-circle"></i>
+              </span>
+            </button>
+            <div *ngIf="answer" class="img">
+              <img class="imgage" [src]="answer.image_url" [alt]="answer.name">
+            </div>
+            <div *ngIf="answer" class="detail">
+              <h5> {{answer.name}}</h5>
+              
+              <img *ngIf="answer.rating == 0" src="./assets/images/small_0.png">
+              <img *ngIf="answer.rating == 1" src="./assets/images/small_1.png">
+              <img *ngIf="answer.rating == 1.5" src="./assets/images/small_1_half.png">
+              <img *ngIf="answer.rating == 2" src="./assets/images/small_2.png">
+              <img *ngIf="answer.rating == 2.5" src="./assets/images/small_2_half.png">
+              <img *ngIf="answer.rating == 3" src="./assets/images/small_3.png">
+              <img *ngIf="answer.rating == 3.5" src="./assets/images/small_3_half.png">
+              <img *ngIf="answer.rating == 4" src="./assets/images/small_4.png">
+              <img *ngIf="answer.rating == 4.5" src="./assets/images/small_4_half.png">
+              <img *ngIf="answer.rating == 5" src="./assets/images/small_5.png">
+              <span class="review">Based on {{answer.review_count}} reviews</span> <br> <span class="prices">Price: {{answer.price}} </span>
+              <p class="address">{{answer['location']['address1']}}, {{answer['location']['address2']}}</p> 
+              <p class="address">{{answer['location']['city']}}, {{answer['location']['state']}} {{answer['location']['zip_code']}} </p>
+            </div>
+
+            <div class="map">
+                <agm-map [zoom]="15"[latitude]="lat" [longitude]="lng">
+                    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                </agm-map>
+              </div>
+          </div>
+
+          <div  *ngIf="randomSelected" class="selectedAnswer">
+            <div class="spaces">
+              <div *ngIf="selectedAnswer" class="answer">
+                <div class="display">
+                  <div *ngIf="selectedAnswer" class="img">
+                    <img class="imgage" [src]="selectedAnswer.image_url" [alt]="selectedAnswer.name">
+                  </div>
+                  <div *ngIf="selectedAnswer" class="detail">
+                    <h5> {{selectedAnswer.name}}</h5>
+                    
+                    <img *ngIf="selectedAnswer.rating == 0" src="./assets/images/small_0.png">
+                    <img *ngIf="selectedAnswer.rating == 1" src="./assets/images/small_1.png">
+                    <img *ngIf="selectedAnswer.rating == 1.5" src="./assets/images/small_1_half.png">
+                    <img *ngIf="selectedAnswer.rating == 2" src="./assets/images/small_2.png">
+                    <img *ngIf="selectedAnswer.rating == 2.5" src="./assets/images/small_2_half.png">
+                    <img *ngIf="selectedAnswer.rating == 3" src="./assets/images/small_3.png">
+                    <img *ngIf="selectedAnswer.rating == 3.5" src="./assets/images/small_3_half.png">
+                    <img *ngIf="selectedAnswer.rating == 4" src="./assets/images/small_4.png">
+                    <img *ngIf="selectedAnswer.rating == 4.5" src="./assets/images/small_4_half.png">
+                    <img *ngIf="selectedAnswer.rating == 5" src="./assets/images/small_5.png">
+                    <span class="review">Based on {{selectedAnswer.review_count}} reviews</span> <br> <span class="prices">Price: {{selectedAnswer.price}} </span>
+                    <p class="address">{{selectedAnswer['location']['address1']}}, {{selectedAnswer['location']['address2']}}</p> 
+                    <p class="address">{{selectedAnswer['location']['city']}}, {{selectedAnswer['location']['state']}} {{selectedAnswer['location']['zip_code']}} </p>
+                  </div>
+
+                </div>
+      
+                  <div *ngIf="selectedAnswer" class="map">
+                    <agm-map [zoom]="15"[latitude]="lat" [longitude]="lng">
+                        <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                    </agm-map>
+                  </div>
+              
+                </div>
+            </div>
+            <div>
+              <button class="buttonnn" (click)="generateSelected()">May-Bly</button>
+
+            </div>
+          </div>
+    </div>
+    
+    <div class="col-sm-12 col-lg-4">
+        <div class="form" *ngIf="randomDiv">
+            <form (submit)="generate()">
+              <table>
+                <tr>
+                  <td>Keyword:</td>
+                  <td><input type="text" name="term" [(ngModel)]="yelpSearch.term"></td>
+                </tr>
+                <tr>
+                  <td>Category:</td>
+                  <td><input type="text" name="category" [(ngModel)]="yelpSearch.category" ></td>
+                </tr>
+                <tr>
+                  <td>Location:</td>
+                  <td><input type="text" name="location" required [(ngModel)]="yelpSearch.location" #location="ngModel"></td>
+                  <td>
+                    <span *ngIf="location.errors" class="required">required</span>
+                  </td>
+                </tr>
+              </table>
+              <button [disabled]="location.errors" class="button">May-Bly</button>
+            </form>
+          </div>
+
+         
+    </div>
+
+  </div>
+</div>
